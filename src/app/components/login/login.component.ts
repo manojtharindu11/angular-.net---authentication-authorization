@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import { UserStoreService } from 'src/app/services/user-store.service';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +16,7 @@ export class LoginComponent implements OnInit {
   eyeIcon:string = 'fa-eye-slash'
   loginForm!: FormGroup;
 
-  constructor(private _auth:AuthService, private fb:FormBuilder,private _router : Router) {}
+  constructor(private _auth:AuthService, private fb:FormBuilder,private _router : Router, private _userStore:UserStoreService) {}
 
   ngOnInit(): void {
       this.loginForm = this.fb.group({
@@ -35,6 +36,9 @@ export class LoginComponent implements OnInit {
       this._auth.login(this.loginForm.value).subscribe({
         next: (res:any) => {
           this._auth.storeToken(res.token);
+          const tokenPayload = this._auth.decodedToken();
+          this._userStore.setFullNameForStore(tokenPayload.unique_name);
+          this._userStore.setRoleForStore(tokenPayload.role);
           console.log(res);
           this.loginForm.reset();
           this._router.navigate(['dashboard']);
