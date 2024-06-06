@@ -59,7 +59,7 @@ export class TokenInterceptor implements HttpInterceptor {
       }),
       catchError((err)=> {
         return throwError(()=> {
-            console.log("token is expired. login again")
+            console.log("token is expired. login again",err);
             this._router.navigate(['login']);
         })
       })

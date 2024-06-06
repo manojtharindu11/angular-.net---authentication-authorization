@@ -9,24 +9,32 @@
                     <div class="panel-body p-3">
                         <form [formGroup]="loginForm">
                             <div class="form-group pt-3">
-                                <div class="input-field" [class.error]="loginForm.controls['username'].dirty && loginForm.hasError('required','username')">
+                                <div class="input-field"
+                                    [class.error]="loginForm.controls['username'].dirty && loginForm.hasError('required','username')">
                                     <span class="fa fa-user p-2"></span>
                                     <input formControlName="username" type="text" placeholder="Username">
                                 </div>
                             </div>
-                            <small *ngIf="loginForm.controls['username'].dirty && loginForm.hasError('required','username')" class="text-danger">*Username is requird!</small>
+                            <small
+                                *ngIf="loginForm.controls['username'].dirty && loginForm.hasError('required','username')"
+                                class="text-danger">*Username is requird!</small>
                             <div class="form-group pt-3">
-                                <div class="input-field" [class.error]="loginForm.controls['password'].dirty && loginForm.hasError('required','password')">
+                                <div class="input-field"
+                                    [class.error]="loginForm.controls['password'].dirty && loginForm.hasError('required','password')">
                                     <span class="fa fa-lock p-2"></span>
                                     <input formControlName="password" [type]="type" placeholder="Password">
                                     <span (click)="hideShowPass()" class="fa {{eyeIcon}}"></span>
                                 </div>
                             </div>
-                            <small *ngIf="loginForm.controls['password'].dirty && loginForm.hasError('required','password')" class="text-danger">*Password is requird!</small>
+                            <small
+                                *ngIf="loginForm.controls['password'].dirty && loginForm.hasError('required','password')"
+                                class="text-danger">*Password is required!</small>
                             <div class="form-inline fr mt-4">
-                                <a id="forget" class="font-weight-bold">Forget Password?</a>
+                                <a id="forgot" class="font-weight-bold" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal">Forget Password?</a>
                             </div>
-                            <button (click)="onLogin()" [disabled]="loginForm.invalid" type="submit" class="btn btn-primary btn-block mt-4 w-100">Login</button>
+                            <button (click)="onLogin()" [disabled]="loginForm.invalid" type="submit"
+                                class="btn btn-primary btn-block mt-4 w-100">Login</button>
                             <div class="text-center pt-4 text-muted">Don't have account? <a id="forget"
                                     routerLink="/signup">Sign Up</a></div>
                         </form>
@@ -42,6 +50,34 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <p class="modal-title" id="exampleModalLabel"><span style="font-size: 25px;font-weight: 700;">Forgot
+                        Password</span></p>
+                <small>Please provide your email we will send the result link</small>
+
+                <button type="button" class="btn-close" data-bs-dismiss="modal" area-labal="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Modal content goes here -->
+                <div class="form-group pt-3">
+                    <div class="input-field"> <span class="fa fa-user p-2"></span> <input type="text"
+                            [(ngModel)]="resetPasswordEmail" (ngModelChange)="checkValidEmail($event)"
+                            placeholder="Email"></div>
+                </div>
+                <small *ngIf="!resetPasswordEmail" class="text-danger">*Email is requird</small>
+                <small *ngIf="!isValidEmail && resetPasswordEmail" class="text-danger">*Email is invalid</small>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="closeButton" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" (click)="confirmToSend()" class="btn btn-primary">Send</button>
             </div>
         </div>
     </div>
